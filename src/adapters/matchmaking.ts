@@ -1,7 +1,7 @@
 import { IBaseComponent } from '@well-known-components/interfaces'
 import { AppComponents, WS_OPEN, WebSocket } from '../types'
 import { randomUUID } from 'crypto'
-import { MessageType, encodeMatchMessage } from '../logic/protocol'
+import { encodeMatchMessage } from '../logic/protocol'
 
 export type IMatchMakingComponent = IBaseComponent & {
   registerUser(ws: WebSocket, scene: string, address: string): void
@@ -12,6 +12,7 @@ export type IMatchMakingComponent = IBaseComponent & {
 type Match = {
   users: Set<string>
   world: string
+  createdAt: number
 }
 
 // TODO
@@ -30,7 +31,7 @@ export function createMatchMakingComponent({ logs }: Pick<AppComponents, 'logs'>
 
   const socketByAddress = new Map<string, WebSocket>()
   const lobbyByWorldName = new Map<string, string[]>()
-  const matches = new Map<string, Match>()
+  const matches = new Map<string, Match>() //TODO: delete the match after some time
 
   function registerUser(ws: WebSocket, world: string, address: string): void {
     socketByAddress.set(address, ws)
@@ -41,7 +42,8 @@ export function createMatchMakingComponent({ logs }: Pick<AppComponents, 'logs'>
         const matchId = randomUUID()
         const match = {
           users: new Set<string>(),
-          world
+          world,
+          createdAt: Date.now()
         }
         const msg = encodeMatchMessage(matchId)
         for (let i = 0; i < MATCH_SIZE; ++i) {
