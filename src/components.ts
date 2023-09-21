@@ -18,7 +18,7 @@ export async function initComponents(): Promise<AppComponents> {
   const statusChecks = await createStatusCheckComponent({ server, config })
   const fetch = createFetchComponent()
   const wsRegistry = createWSRegistry({ metrics })
-  const matchmaking = createMatchMakingComponent({ logs })
+  const matchmaking = await createMatchMakingComponent({ logs, config })
 
   await instrumentHttpServerWithMetrics({ metrics, server, config })
 

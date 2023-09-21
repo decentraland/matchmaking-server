@@ -26,8 +26,13 @@ function deleteFromArray<T>(array: T[], value: T): T[] {
   return array
 }
 
-export function createMatchMakingComponent({ logs }: Pick<AppComponents, 'logs'>): IMatchMakingComponent {
+export async function createMatchMakingComponent({
+  logs,
+  config
+}: Pick<AppComponents, 'logs' | 'config'>): Promise<IMatchMakingComponent> {
   const logger = logs.getLogger('match-making')
+
+  const domain = await config.requireString('DOMAIN')
 
   const socketByAddress = new Map<string, WebSocket>()
   const lobbyByWorldName = new Map<string, string[]>()
@@ -45,7 +50,7 @@ export function createMatchMakingComponent({ logs }: Pick<AppComponents, 'logs'>
           world,
           createdAt: Date.now()
         }
-        const msg = encodeMatchMessage(matchId)
+        const msg = encodeMatchMessage(`${domain}/match/${matchId}`)
         for (let i = 0; i < MATCH_SIZE; ++i) {
           const address = users.shift()!
           const ws = socketByAddress.get(address)
