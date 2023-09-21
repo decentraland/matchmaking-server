@@ -16,6 +16,7 @@ type Match = {
 }
 
 // TODO
+
 const MATCH_SIZE = 1
 
 function deleteFromArray<T>(array: T[], value: T): T[] {
