@@ -32,6 +32,9 @@ export async function aboutHandler(
   about.comms.fixedAdapter = `signed-login:${baseUrl}/get-comms-adapter/${matchId}`
 
   return {
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
     status: 200,
     body: about
   }

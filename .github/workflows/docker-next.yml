@@ -11,4 +11,5 @@ jobs:
     with:
       dockerfile-url: https://raw.githubusercontent.com/decentraland/platform-actions/main/Dockerfile.ubuntu
       service-name: matchmaking-server
+      deployment-environment: dev
     secrets: inherit
