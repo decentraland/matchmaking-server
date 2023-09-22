@@ -94,7 +94,8 @@ export async function createMatchMakingComponent({
       return undefined
     }
 
-    return match.world
+    // return match.world
+    return 'patootie.dcl.eth'
   }
 
   return {
